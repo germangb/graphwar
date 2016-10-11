@@ -1,4 +1,4 @@
-//  Copyright (C) 2011 Lucas Catabriga Rocha <catabriga90@gmail.com>
+//  Copyright (C) 2010 Lucas Catabriga Rocha <catabriga90@gmail.com>
 //    
 //  This file is part of Graphwar.
 //
@@ -27,22 +27,18 @@ import GraphServer.Constants;
 
 public class RoomServer implements Runnable
 {
-	private List<Room> rooms;
+  private String id;
+  private Room room;
 	private int numRooms;
 	
 	private boolean running;
 	
-	public RoomServer()
+	public RoomServer(String id)
 	{
-		rooms = new ArrayList<Room>();
-		
-		numRooms = 0;
-				
+    this.id = id;
 		try
 		{
-			Room room = new Room(numRooms);
-			rooms.add(room);
-			numRooms++;
+			this.room = new Room(id);
 		} 
 		catch (IOException e)
 		{
@@ -70,75 +66,23 @@ public class RoomServer implements Runnable
 			{
 				e.printStackTrace();
 			}
-			
-			ListIterator<Room> itr = rooms.listIterator();
-			
-			int numEmpty = 0;
-			while(itr.hasNext())
-			{
-				Room room = itr.next();
-				
-				//room.printInfo();
-				
-				if(room.getNumCLients() == 0)
-				{
-					if(room.isAcceptingConnections())
-					{
-						numEmpty++;
-					}
-					else
-					{
-						System.out.println("Restarting room "+room.getRoomNum());
-						
-						int num = room.getRoomNum();
-						room.stop();
-						try
-						{
-							Room newRoom = new Room(num);
-							
-							itr.remove();
-							itr.add(newRoom);
-						} 
-						catch (IOException e)
-						{
-							e.printStackTrace();
-						}
-					}						
-				}
-			}
-			
-			if(numEmpty<3)
-			{
-				try
-				{
-					Room room = new Room(numRooms);
-					rooms.add(room);
-					numRooms++;
-				} 
-				catch (IOException e)
-				{
-					e.printStackTrace();
-				}
-			}
-			else if(numEmpty > 3)
-			{
-				Room room = rooms.get(rooms.size()-1);
-				
-				if(room.getNumCLients() == 0)
-				{
-					room.stop();
-					rooms.remove(room);
-					numRooms--;
-				}
-			}
-		}
+
+      if (!room.isAcceptingConnections())
+      {
+        System.out.println("Restarting room "+room.getRoomId());
+        room.stop();
+        try
+        {
+          room = new Room(id);
+        }
+        catch (IOException e)
+        {
+          e.printStackTrace();
+        }
+      }
+    }
 		
-		ListIterator<Room> itr = rooms.listIterator();		
-		while(itr.hasNext())
-		{
-			Room room = itr.next();			
-			room.stop();
-		}		
+    room.stop();
 		
 	}
 
@@ -155,7 +99,9 @@ public class RoomServer implements Runnable
 	{
 		handleArgs(args);
 
-		RoomServer roomServer = new RoomServer();
+    String id = args[1];
+
+		RoomServer roomServer = new RoomServer(id);
 		
 		new Thread(roomServer).start();
 		

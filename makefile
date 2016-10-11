@@ -34,7 +34,7 @@ run-client:
 		-v /tmp/.X11-unix:/tmp/.X11-unix \
 		-e DISPLAY=${DISPLAY} \
 		graphwar/build \
-		java -jar graphwar.jar
+		java -jar graphwar.jar 172.17.0.1
 
 clean:
 

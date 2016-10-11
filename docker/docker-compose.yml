@@ -1,0 +1,17 @@
+version: '2'
+
+services:
+  global:
+    build: ./global
+    image: global
+    environment:
+      - GLOBAL_IP=global
+    ports:
+      - '23761:23761'
+  room:
+    build: ./room
+    depends_on:
+      - global
+    image: room
+    environment:
+      - GLOBAL_IP=global

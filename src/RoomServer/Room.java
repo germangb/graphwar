@@ -26,11 +26,11 @@ public class Room
 	private RemoteGraphServer gameServer;
 	private GlobalClient globalClient;
 	
-	private int roomNum;
+  public String roomId;
 	
-	public Room(int roomNum) throws IOException
+	public Room(String roomId) throws IOException
 	{
-		this.roomNum = roomNum;
+    this.roomId = roomId;
 		
 		globalClient = new GlobalClient();
 		
@@ -41,7 +41,7 @@ public class Room
 		new Thread(gameServer).start();
 		
 		globalClient.joinGlobalServer("localhost", Constants.GLOBAL_PORT, Constants.DUMMY_NAME);
-		globalClient.createRoom("Public Room "+roomNum, port);
+		globalClient.createRoom("Public Room "+roomId+" ("+port+")", port);
 	}
 	
 	public int getNumCLients()
@@ -49,9 +49,9 @@ public class Room
 		return gameServer.getNumClients();
 	}
 	
-	public int getRoomNum()
+	public String getRoomId()
 	{
-		return this.roomNum;
+		return this.roomId;
 	}
 	
 	public boolean isAcceptingConnections()
@@ -61,7 +61,7 @@ public class Room
 	
 	public void printInfo()
 	{
-		System.out.print("Room "+roomNum+": ");
+		System.out.print("Room "+roomId+": ");
 		System.out.print(this.getNumCLients()+"clients; ");
 		System.out.print(gameServer.getNumPlayers()+"players; ");
 		System.out.print("state: "+gameServer.getGameState()+"; ");

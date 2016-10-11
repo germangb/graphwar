@@ -16,3 +16,6 @@ rm -rf Graphwar
 rm -rf GraphServer
 rm -rf GlobalServer
 rm -rf RoomServer
+
+cp roomServer.jar docker/room
+cp globalServer.jar docker/global
