@@ -40,8 +40,8 @@ public class Room
 		
 		new Thread(gameServer).start();
 		
-		globalClient.joinGlobalServer("localhost", Constants.GLOBAL_PORT, Constants.DUMMY_NAME);
-		globalClient.createRoom("Public Room "+roomId+" ("+port+")", port);
+		globalClient.joinGlobalServer(Constants.GLOBAL_IP, Constants.GLOBAL_PORT, Constants.DUMMY_NAME);
+		globalClient.createRoom("Room "+roomId+" ("+port+")", port);
 	}
 	
 	public int getNumCLients()

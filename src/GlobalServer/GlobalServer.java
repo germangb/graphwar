@@ -271,6 +271,7 @@ public class GlobalServer implements Runnable
 						try 
 						{
 							ipAddress = URLEncoder.encode(player.getIpAddress(), "UTF-8");
+							System.out.println("Room ip:port "+ipAddress+":"+portNumber);
 						} catch (UnsupportedEncodingException e) 
 						{
 							e.printStackTrace();
